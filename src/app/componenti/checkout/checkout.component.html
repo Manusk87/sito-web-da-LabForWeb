@@ -1,0 +1,395 @@
+
+ 
+<header>
+  <!-- navbar con logo e carrello-->
+  <nav>
+    <div class="nav-bottom">
+     <div class="grid-item img" (click)="navigateToHome()" style="cursor: pointer;"><img src="assets/immagini/Logo_NIKE.svg.png"  alt="Logo" /></div>
+     <div></div> <!-- colonna centrale vuota -->
+     <div class="grid-text2">      
+       <div class="search-icons">
+         <button class="cart-btn" (click)="navigateToCart()" title="Carrello">
+           <div class="cart-icon-wrapper">
+             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V16.5M9 19.5C9.8 19.5 10.5 20.2 10.5 21S9.8 22.5 9 22.5 7.5 21.8 7.5 21 8.2 19.5 9 19.5ZM20 19.5C20.8 19.5 21.5 20.2 21.5 21S20.8 22.5 20 22.5 18.5 21.8 18.5 21 19.2 19.5 20 19.5Z" stroke="currentColor" stroke-width="2" fill="none"/>
+             </svg>
+             <span class="cart-count" *ngIf="carrelloService.getCartItemCount() > 0">{{ carrelloService.getCartItemCount() }}</span>
+           </div>
+         </button>
+       </div>
+     </div>
+    </div>
+  </nav>
+</header>
+
+<div class="checkout-container">
+  <!-- Progress Indicator -->
+  <div class="progress-indicator">
+    <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+      <div class="step-number">1</div>
+      <div class="step-label">Consegna</div>
+    </div>
+    <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+      <div class="step-number">2</div>
+      <div class="step-label">Pagamento</div>
+    </div>
+    <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+      <div class="step-number">3</div>
+      <div class="step-label">Verifica</div>
+    </div>
+  </div>
+
+  <div class="checkout-content">
+    <div class="left-column">
+      <!-- FASE 1: OPZIONI DI CONSEGNA -->
+      <div *ngIf="currentStep === 1" class="step-content">
+        <h2>Opzioni di Consegna</h2>
+        <form #deliveryForm="ngForm" (ngSubmit)="goToStep2(deliveryForm)">
+          <div class="form-section">
+            <h3>Indirizzo di Spedizione</h3>
+            
+            <div class="form-group">
+              <label for="nome">Nome *</label>
+              <input 
+                type="text" 
+                id="nome" 
+                name="nome" 
+                class="form-control"
+                [(ngModel)]="formData.nome" 
+                required 
+                minlength="2" 
+                #nome="ngModel" />
+              <div *ngIf="nome.invalid && nome.touched" class="error">
+                Il nome è obbligatorio (min. 2 caratteri).
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cognome">Cognome *</label>
+              <input 
+                type="text" 
+                id="cognome" 
+                name="cognome" 
+                class="form-control"
+                [(ngModel)]="formData.cognome" 
+                required 
+                minlength="2" 
+                #cognome="ngModel" />
+              <div *ngIf="cognome.invalid && cognome.touched" class="error">
+                Il cognome è obbligatorio (min. 2 caratteri).
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="indirizzo">Indirizzo *</label>
+              <input 
+                type="text" 
+                id="indirizzo" 
+                name="indirizzo" 
+                class="form-control"
+                [(ngModel)]="formData.indirizzo" 
+                required 
+                placeholder="Via, numero civico"
+                #indirizzo="ngModel" />
+              <div *ngIf="indirizzo.invalid && indirizzo.touched" class="error">
+                L'indirizzo è obbligatorio.
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="citta">Città *</label>
+                <input 
+                  type="text" 
+                  id="citta" 
+                  name="citta" 
+                  class="form-control"
+                  [(ngModel)]="formData.citta" 
+                  required 
+                  #citta="ngModel" />
+                <div *ngIf="citta.invalid && citta.touched" class="error">
+                  La città è obbligatoria.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cap">CAP *</label>
+                <input 
+                  type="text" 
+                  id="cap" 
+                  name="cap" 
+                  class="form-control"
+                  [(ngModel)]="formData.cap" 
+                  required 
+                  pattern="^\d{5}$" 
+                  #cap="ngModel" />
+                <div *ngIf="cap.invalid && cap.touched" class="error">
+                  Il CAP deve contenere 5 cifre.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="telefono">Telefono *</label>
+              <input 
+                type="tel" 
+                id="telefono" 
+                name="telefono" 
+                class="form-control"
+                [(ngModel)]="formData.telefono" 
+                required 
+                pattern="^\d{10}$" 
+                #telefono="ngModel" />
+              <div *ngIf="telefono.invalid && telefono.touched" class="error">
+                Il telefono deve contenere 10 cifre.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-control"
+                [(ngModel)]="formData.email" 
+                required 
+                email 
+                #email="ngModel" />
+              <div *ngIf="email.invalid && email.touched" class="error">
+                Inserisci un'email valida.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Modalità di Spedizione</h3>
+            <div class="shipping-options">
+              <div class="shipping-option">
+                <input 
+                  type="radio" 
+                  id="standard" 
+                  name="spedizione" 
+                  value="standard" 
+                  [(ngModel)]="formData.spedizione" 
+                  required />
+                <label for="standard">
+                  <div class="option-info">
+                    <span class="option-name">Spedizione Standard</span>
+                    <span class="option-time">3-5 giorni lavorativi</span>
+                  </div>
+                  <span class="option-price">Gratuita</span>
+                </label>
+              </div>
+              
+              <div class="shipping-option">
+                <input 
+                  type="radio" 
+                  id="express" 
+                  name="spedizione" 
+                  value="express" 
+                  [(ngModel)]="formData.spedizione" />
+                <label for="express">
+                  <div class="option-info">
+                    <span class="option-name">Spedizione Express</span>
+                    <span class="option-time">1-2 giorni lavorativi</span>
+                  </div>
+                  <span class="option-price">€9.99</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="!deliveryForm.valid">
+              Continua al Pagamento
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 2: PAGAMENTO -->
+      <div *ngIf="currentStep === 2" class="step-content">
+        <h2>Metodo di Pagamento</h2>
+        <form [formGroup]="paymentForm" (ngSubmit)="goToStep3()">
+          <div class="payment-methods">
+            <div class="payment-method">
+              <input 
+                type="radio" 
+                id="carta" 
+                name="metodoPagamento" 
+                value="carta" 
+                [(ngModel)]="formData.metodoPagamento" 
+                [ngModelOptions]="{standalone: true}" />
+              <label for="carta">Carta di Credito/Debito</label>
+            </div>
+            
+            <div class="payment-method">
+              <input 
+                type="radio" 
+                id="paypal" 
+                name="metodoPagamento" 
+                value="paypal" 
+                [(ngModel)]="formData.metodoPagamento" 
+                [ngModelOptions]="{standalone: true}" />
+              <label for="paypal">PayPal</label>
+            </div>
+          </div>
+
+          <div *ngIf="formData.metodoPagamento === 'carta'" class="card-details">
+            <div class="form-group">
+              <label for="cardNumber">Numero Carta *</label>
+              <input 
+                type="text" 
+                id="cardNumber" 
+                formControlName="cardNumber" 
+                class="form-control" 
+                maxlength="23"
+                placeholder="1234 5678 9012 3456"
+                (input)="formatCardNumber($event)" />
+              <div *ngIf="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched" class="error">
+                  <small *ngIf="paymentForm.get('cardNumber')?.errors?.['required']">Il numero della carta è obbligatorio.</small>
+                  <small *ngIf="paymentForm.get('cardNumber')?.errors?.['invalidCardNumber']">Il numero della carta non è valido.</small>
+                </div>
+                <div *ngIf="paymentForm.get('cardNumber')?.valid && paymentForm.get('cardNumber')?.value" class="card-type">
+                  <small>Tipo carta: {{ getCardType(paymentForm.get('cardNumber')?.value) }}</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiryDate">Scadenza *</label>
+                <input 
+                  type="text" 
+                  id="expiryDate" 
+                  formControlName="expiryDate" 
+                  class="form-control"
+                  maxlength="5"
+                  placeholder="MM/YY"
+                  (input)="formatExpiryDate($event)" />
+                <div *ngIf="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched" class="error">
+                  <small *ngIf="paymentForm.get('expiryDate')?.errors?.['required']">La data di scadenza è obbligatoria.</small>
+                  <small *ngIf="paymentForm.get('expiryDate')?.errors?.['invalidFormat']">Formato non valido. Usa MM/YY.</small>
+                  <small *ngIf="paymentForm.get('expiryDate')?.errors?.['cardExpired']">La carta è scaduta.</small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cvv">CVV *</label>
+                <input 
+                  type="text" 
+                  id="cvv" 
+                  formControlName="cvv" 
+                  class="form-control" 
+                  maxlength="4"
+                  placeholder="123"
+                  (input)="formatCvv($event)" />
+                <div *ngIf="paymentForm.get('cvv')?.invalid && paymentForm.get('cvv')?.touched" class="error">
+                  <small *ngIf="paymentForm.get('cvv')?.errors?.['required']">Il CVV è obbligatorio.</small>
+                  <small *ngIf="paymentForm.get('cvv')?.errors?.['invalidCvv']">Il CVV deve essere di 3 o 4 cifre.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="btn btn-secondary" (click)="goToStep1()">
+              Indietro
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="!isPaymentValid()">
+              Continua alla Verifica
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FASE 3: VERIFICA ORDINE -->
+      <div *ngIf="currentStep === 3" class="step-content">
+        <h2>Verifica il tuo Ordine</h2>
+        
+        <div class="order-summary">
+          <div class="summary-section">
+            <h3>Indirizzo di Spedizione</h3>
+            <div class="address-info">
+              <p>{{ formData.nome }} {{ formData.cognome }}</p>
+              <p>{{ formData.indirizzo }}</p>
+              <p>{{ formData.cap }} {{ formData.citta }}</p>
+              <p>Tel: {{ formData.telefono }}</p>
+              <p>Email: {{ formData.email }}</p>
+            </div>
+            <button type="button" class="btn-edit" (click)="goToStep1()">Modifica</button>
+          </div>
+
+          <div class="summary-section">
+            <h3>Metodo di Pagamento</h3>
+            <div class="payment-info">
+              <p *ngIf="formData.metodoPagamento === 'carta'">Carta di Credito ****{{ getLastFourDigits() }}</p>
+              <p *ngIf="formData.metodoPagamento === 'paypal'">PayPal</p>
+            </div>
+            <button type="button" class="btn-edit" (click)="goToStep2()">Modifica</button>
+          </div>
+
+          <div class="summary-section">
+            <h3>Spedizione</h3>
+            <div class="shipping-info">
+              <p *ngIf="formData.spedizione === 'standard'">Spedizione Standard (3-5 giorni) - Gratuita</p>
+              <p *ngIf="formData.spedizione === 'express'">Spedizione Express (1-2 giorni) - €9.99</p>
+            </div>
+            <button type="button" class="btn-edit" (click)="goToStep1()">Modifica</button>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="btn btn-secondary" (click)="goToStep2()">
+            Indietro
+          </button>
+          <button type="button" class="btn btn-success" (click)="completeOrder()">
+            Conferma Ordine
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNA DESTRA: RIEPILOGO CARRELLO -->
+    <div class="right-column">
+      <div class="cart-summary">
+        <h3>Riepilogo Ordine</h3>
+        
+        <div class="cart-items">
+          <div *ngFor="let product of cart" class="cart-item">
+            <img [src]="product.image" [alt]="product.name" class="item-image" />
+            <div class="item-details">
+              <h4>{{ product.name }}</h4>
+              <p>Taglia: {{ product.size }}</p>
+              <p>Colore: {{ product.color }}</p>
+              <p>Quantità: {{ product.quantity }}</p>
+            </div>
+            <div class="item-price">
+              €{{ (product.price * product.quantity).toFixed(2) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="order-totals">
+          <div class="total-row">
+            <span>Subtotale</span>
+            <span>€{{ getSubtotal() }}</span>
+          </div>
+          <div class="total-row">
+            <span>Spedizione</span>
+            <span>{{ getShippingCost() }}</span>
+          </div>
+          <div class="total-row total">
+            <span>Totale</span>
+            <span>€{{ getTotal() }}</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline" routerLink="/carrello">
+          Modifica Carrello
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+     

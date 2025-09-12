@@ -1,0 +1,79 @@
+<footer><br>
+
+  <div class="footer-container">
+    <div class="colonna-footer" [class.expanded]="footerExpandedSections['risorse']">
+      <h4 (click)="toggleFooterSection('risorse', $event)">Risorse</h4>
+      <div class="footer-content">
+        <a>Gift card</a>
+        <a>Gift card aziendali</a>
+        <a>Trova un negozio</a>
+        <a>Nike Journal</a>
+        <a>Diventa member</a>
+        <a>Sconto studenti</a>
+        <a>Feedback</a>
+        <a>Codici promozionali</a>
+      </div>
+    </div>
+
+    <div class="colonna-footer" [class.expanded]="footerExpandedSections['assistenza']">
+      <h4 (click)="toggleFooterSection('assistenza', $event)">Assistenza</h4>
+      <div class="footer-content">
+        <a>Assistenza</a>
+        <a>Stato ordine</a>
+        <a>Spedizione e consegna</a>
+        <a>Resi</a>
+        <a>Opzioni di pagamento</a>
+        <a>Contattaci</a>
+        <a>Recensioni</a>
+        <a>Assistenza Codici promozionali Nike</a>
+      </div>
+    </div>
+
+    <div class="colonna-footer" [class.expanded]="footerExpandedSections['azienda']">
+      <h4 (click)="toggleFooterSection('azienda', $event)">Azienda</h4>
+      <div class="footer-content">
+        <a>Informazioni su Nike</a>
+        <a>News</a>
+        <a>Lavora con noi</a>
+        <a>Investitori</a>
+        <a>Sostenibilità</a>
+        <a>Accessibilità</a>
+        <a>Obiettivo</a>
+        <a>Segnala un problema</a>
+      </div>
+    </div>
+
+    <div class="colonna-footer" [class.expanded]="footerExpandedSections['italia']" >
+      <div class="colonna-footer2">
+        <a class="italia-link">
+          <svg class="world-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M2 12h20" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <b (click)="toggleFooterSection('italia', $event)" >Italia</b>
+        </a>
+      </div>
+    </div>
+  </div>
+
+      <div class="footer-container2">
+      
+        <ul>
+        
+        <a>&copy;  2025 Lab Air Inspired Site.     Tutti i diritti riservati.</a>
+       
+        <li> Condizioni d'uso</li> 
+
+        <li>Condizioni di vendita</li> 
+
+        <li>Info legali e societarie</li> 
+
+        <li>Informativa sulla privacy e sui cookie</li> 
+
+        <li>Impostazioni relative a privacy e cookie</li>
+
+       </ul> 
+</div>
+
+</footer>

@@ -1,0 +1,326 @@
+<header>
+
+  <!-- inizio prima nav -->
+
+  <div class="nav-top">
+    <ul>
+      <li><a href="#">Trova un negozio</a></li>
+       <li><a href="#">|</a></li>
+      <li><a href="#">Aiuto</a></li>
+        <li><a href="#">|</a></li>
+      <li><a href="#">Unisciti a noi</a></li>
+        <li><a href="#">|</a></li>
+      <li><a href="#">Accedi</a></li>
+    </ul>
+  </div>
+
+  <!-- fine prima nav -->
+  <!-- inizio seconda nav con logo menu e input di ricerca-->
+
+<nav>
+  <div class="nav-bottom">
+   <div class="grid-item img" (click)="navigateToHome()" style="cursor: pointer;"><img src="assets/immagini/Logo_NIKE.svg.png"  alt="Logo" /></div>
+  <ul class="menu">
+    <li *ngFor="let item of menuItems"
+        (mouseenter)="showSubmenu(item.id)"
+        (mouseleave)="tryHideSubmenu()">
+      <a href="#" (click)="$event.preventDefault()">{{ item.label }}</a>
+    </li>
+  </ul>
+
+<div class="grid-text2">      
+   <div class="search-input-wrapper">
+     <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <circle cx="11" cy="11" r="8" stroke="#666" stroke-width="2"/>
+       <path d="m21 21-4.35-4.35" stroke="#666" stroke-width="2"/>
+     </svg>
+     <span class="search-text">Cerca</span>
+     <input (click)="showSearchOverlay()"
+      type="text"
+      placeholder=""
+     />
+   </div>
+   <button class="search-icon-only" (click)="showSearchOverlay()" title="Cerca">
+     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+       <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+     </svg>
+   </button>
+   <!-- Icone per dispositivi mobili (sotto 960px) -->
+   <div class="mobile-icons">
+     <button class="user-btn" title="Utente">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+         <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+       </svg>
+     </button>
+   </div>
+
+   <div class="search-icons">
+     <button class="favorites-btn" (click)="toggleFavorites()" title="Preferiti">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" stroke-width="2" [attr.fill]="isFavorite ? 'red' : 'none'"/>
+       </svg>
+     </button>
+     <button class="cart-btn" (click)="navigateToCart()" title="Carrello">
+       <div class="cart-icon-wrapper">
+         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V16.5M9 19.5C9.8 19.5 10.5 20.2 10.5 21S9.8 22.5 9 22.5 7.5 21.8 7.5 21 8.2 19.5 9 19.5ZM20 19.5C20.8 19.5 21.5 20.2 21.5 21S20.8 22.5 20 22.5 18.5 21.8 18.5 21 19.2 19.5 20 19.5Z" stroke="currentColor" stroke-width="2" fill="none"/>
+         </svg>
+         <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+       </div>
+     </button>
+     <button class="menu-btn" title="Menu" (click)="openSidebar()">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/>
+         <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2"/>
+         <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2"/>
+       </svg>
+     </button>
+   </div>
+</div>
+   </div>
+
+  <div class="mega-wrapper"
+       (mouseenter)="cancelHide()"
+       (mouseleave)="tryHideSubmenu()"
+       [style.maxHeight]="megaOpen ? '450px' : '0'"
+       [style.opacity]="megaOpen ? '1' : '0'">
+
+    <div *ngFor="let item of menuItems"
+         class="mega-content"
+         [style.display]="activeSubmenuId === item.id ? 'flex' : 'none'">
+
+      <ng-container *ngFor="let column of item.subMenu">
+        <ul  class="mega-column"> 
+          <a href="#"><h4>{{ column.title }}</h4></a>
+          <li *ngFor="let link of column.links">
+            <a href="#">{{ link }}</a>
+          </li>
+        </ul>
+      </ng-container>
+
+    </div>
+  </div>
+</nav>
+
+ <!-- Sidebar Menu -->
+ <div class="sidebar-overlay" [class.open]="isSidebarOpen" (click)="closeSidebar()"></div>
+ <div class="sidebar" [class.open]="isSidebarOpen">
+   <div class="sidebar-header">
+     <!-- Pulsante Indietro -->
+     <div class="back-button" *ngIf="currentLevel !== 'main'">
+       <button (click)="navigateBack()" class="btn-back">
+         <span class="nav-arrow-back">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+           </svg>
+         </span>
+         {{ currentLevel === 'submenu' ? 'Tutto' : currentSubMenuItem?.title }}
+       </button>
+     </div>
+     <h3></h3>
+     <button class="close-btn" (click)="closeSidebar()">
+       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+         <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+       </svg>
+     </button>
+   </div>
+   <div class="sidebar-content">
+
+     <!-- Menu principale -->
+     <div *ngIf="currentLevel === 'main'">
+       <ul class="menu">
+         <li *ngFor="let item of menuItems">
+           <a href="#" (click)="$event.preventDefault(); navigateToSubmenu(item)">
+             {{ item.label }}
+             <span class="nav-arrow">
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+               </svg>
+             </span>
+           </a>
+         </li>
+       </ul>
+       
+       <!-- Sezione Member Nike -->
+       <div class="sidebar-member-section">
+         <p class="sidebar-member-text">
+          Diventa member Nike per accedere a prodotti fantastici, tanta ispirazione e storie sullo sport.
+           <span class="text-dark">Scopri di più.</span>
+         </p>
+         <div class="sidebar-member-buttons">
+           <button class="sidebar-btn-join">Unisciti a noi</button>
+           <button class="sidebar-btn-login">Accedi</button>
+         </div>
+       </div>
+       
+       <!-- Menu icone aggiuntive -->
+       <ul class="sidebar-icon-menu">
+         <li>
+          <a (click)="navigateToCart(); $event.preventDefault()">
+            <div class="sidebar-cart-icon-wrapper">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V16.5M9 19.5C9.8 19.5 10.5 20.2 10.5 21S9.8 22.5 9 22.5 7.5 21.8 7.5 21 8.2 19.5 9 19.5ZM20 19.5C20.8 19.5 21.5 20.2 21.5 21S20.8 22.5 20 22.5 18.5 21.8 18.5 21 19.2 19.5 20 19.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="sidebar-cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+            </div>
+            <span>Carrello</span>
+          </a>
+        </li>
+         <li>
+           <a href="#">
+             <svg class="sidebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+               <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+               <path d="M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+             </svg>
+             <span>Aiuto</span>
+           </a>
+         </li>
+         <li>
+           <a href="#">
+             <svg class="sidebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M16 3H8a2 2 0 0 0-2 2v14l8-4 8 4V5a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2" fill="none"/>
+               <rect x="8" y="7" width="8" height="2" fill="currentColor"/>
+               <rect x="8" y="11" width="6" height="2" fill="currentColor"/>
+             </svg>
+             <span>Ordini</span>
+           </a>
+         </li>
+         <li>
+           <a href="#">
+             <svg class="sidebar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M3 9L12 2L21 9V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="2" fill="none"/>
+               <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" stroke-width="2" fill="none"/>
+             </svg>
+             <span>Trova un negozio</span>
+           </a>
+         </li>
+       </ul>
+     </div>
+
+     <!-- Sottomenu -->
+     <div *ngIf="currentLevel === 'submenu' && currentMenuItem">
+       <h3 class="menu-title">{{ currentMenuItem.label }}</h3>
+       <ul class="submenu">
+         <li *ngFor="let subItem of currentMenuItem.subMenu">
+           <a href="#" (click)="$event.preventDefault(); navigateToSubSubmenu(subItem)">
+             {{ subItem.title }}
+             <span class="nav-arrow">
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                 <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+               </svg>
+             </span>
+           </a>
+         </li>
+       </ul>
+     </div>
+
+     <!-- Sotto-sottomenu -->
+     <div *ngIf="currentLevel === 'subsubmenu' && currentSubMenuItem">
+       <h3 class="menu-title">{{ currentSubMenuItem.title }}</h3>
+       <ul class="sub-submenu">
+         <li *ngFor="let link of currentSubMenuItem.links">
+           <a href="#" (click)="$event.preventDefault()">
+             {{ link }}
+           </a>
+         </li>
+       </ul>
+     </div>
+   </div>
+ </div>
+
+</header>
+
+<div class="search-overlay" *ngIf="showOverlay">
+  <div class="search-header">
+    <img src="assets/immagini/Logo_NIKE.svg.png" alt="Logo" class="logo" (click)="navigateToHome()" style="cursor: pointer;">
+    <div class="search-input-container">
+      <svg class="search-icon-overlay" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="8" stroke="#666" stroke-width="2"/>
+        <path d="m21 21-4.35-4.35" stroke="#666" stroke-width="2"/>
+      </svg>
+      <input
+        #searchInput
+        type="text"
+        class="search-bar"
+        [value]="searchTerm"
+        [(ngModel)]="searchTerm"
+        (input)="onInputChange($event)"
+        placeholder="Cerca"
+      />
+      
+      <span
+        class="tooltip"
+        *ngIf="!searchTerm"
+      >
+        Compila questo campo
+      </span>
+
+      <button
+        *ngIf="searchTerm"
+        class="clear-btn"
+        (click)="clearSearch()"
+        aria-label="Cancella ricerca"
+      >
+        ❌
+      </button>
+    </div>
+    <button class="cancel-btn" (click)="hideOverlay()">Annulla</button>
+  </div>
+  
+  <!-- Mostra termini più ricercati quando l'input è vuoto - posizionato centralmente -->
+  <div *ngIf="searchTerm.trim().length === 0" class="popular-terms-container">
+    <h5 style="color: rgb(126, 124, 124); margin-bottom: 15px; ">I termini più ricercati</h5>
+    <div class="popular-terms-buttons">
+      <button *ngFor="let term of popularSearchTerms" 
+              class="popular-term-btn" 
+              (click)="onPopularTermClick(term)">
+        {{ term }}
+      </button>
+    </div>
+  </div>
+  
+<!-- parole chiave colonna di sinistra della finestra di ricerca dell'input-->
+
+ <div class="search-body"> 
+ <div class="suggestions">
+      <!-- Mostra suggerimenti quando l'utente sta digitando -->
+      <ul *ngIf="searchTerm.trim().length > 0"><div><h5 style="color: black;">suggerimenti principali</h5></div>
+         <li *ngFor="let suggestion of filteredSuggestions" (click)="onSuggestionClick(suggestion)">
+          <ng-container *ngFor="let char of suggestion.split('')">
+          <span [ngClass]="isMatch(char) ? 'match-char' : 'non-match-char'">
+          {{ char }}
+          </span>
+          </ng-container>
+        </li>
+      </ul>
+      </div>
+
+  <!-- parole chiave colonna di destra della finestra di ricerca dell'input-->
+
+   <div class="filtered-products"
+    
+  *ngIf="searchTerm.trim().length > 0 && prodottiFiltrati.length > 0">
+  
+  <div *ngFor="let product of prodottiFiltrati" class="product-item" (click)="viewProduct(product)"> 
+    <img [src]="product.image" [alt]="product.name" />
+    <div class="product-info">
+      <h5 class="product-name">{{ product.name }}</h5>
+      <p class="product-price">€{{ product.price }}</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- Messaggio "Nessun prodotto trovato" -->
+<!--
+<div *ngIf="searchTerm.trim().length > 0 && prodottiFiltrati.length === 0">
+  <p>Nessun prodotto trovato</p>
+</div>
+-->
+
+

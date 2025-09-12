@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab-Air</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+</head>
+
+<header>
+
+<!-- INIZIO FINESTRA DI RICERCA INPUT -->
+
+ <app-search
+    [searchTerm]="searchTerm"
+    [suggestions]="allSuggestions"
+    (searchTermChange)="onSearchTermChange($event)"
+  ></app-search>
+
+<!-- FINE FINESTRA DI RICERCA INPUT -->
+</header>
+
+<!-- INIZIO BODY -->
+
+<body>
+<!--width="1905px" height="1070px"-->
+<!--<div class="video-container">
+<video
+  #myVideo width="1905px" autoplay muted playsinline loop (canplay)="playVideo()"       
+>
+  <source src="assets/immagini/854621-hd_1920_1080_25fps.mp4" type="video/mp4" />
+  Il tuo browser non supporta il tag video.
+</video>
+
+ <!-- Testo nel video -->
+ <!-- <div class="overlay-text">
+    <h1>
+    I MEMBER HANNO ACCESSO AL MEGLIO
+    </h1>
+    <h5>Muoviti, Fai acquisti, personalizza e festeggia con LabfofAir.</h5>
+  </div>
+
+  <!-- Pulsante nel video -->
+  <!--<button class="overlay-button" (click)="onButtonClick()">
+    Iscriviti
+  </button>
+</div>-->
+
+<!-- Filtraggio dei prodotti-->
+
+<!-- <div class="productsHome-list" *ngIf="showResults">
+ <div *ngFor="let product of filterProducts()">
+ <div class="productHome" (click)="viewProduct(product)">
+ <h6>{{ product.name }}</h6>
+ </div>
+ </div>
+ </div>-->
+
+<!-- Scrollbar automatica -->
+<div class="auto-scrollbar-container">
+  <div class="auto-scrollbar" 
+       [class.no-transition]="isTransitioning"
+       [style.transform]="'translateX(-' + (currentAutoScrollIndex * 100) + '%)'">
+    <div class="auto-scroll-item" *ngFor="let image of autoScrollImages; let i = index">
+      <img [src]="image" alt="Immagine automatica">
+      <div class="auto-scroll-overlay">
+        <h2 class="auto-scroll-title">{{ getAutoScrollTitle(i) }}</h2>
+        <p class="auto-scroll-subtitle">{{ getAutoScrollSubtitle(i) }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Indicatori a punti -->
+  <div class="dots-container">
+    <span class="dot" 
+          *ngFor="let image of originalAutoScrollImages; let i = index"
+          [class.active]="i === (currentAutoScrollIndex % originalAutoScrollImages.length)"
+          (click)="goToSlide(i)">
+    </span>
+   </div>
+ </div>
+
+<section id="prodotti">
+  <div class="prodotto">
+    <div class="categoria-box" (click)="filtraPerCategoria('Nuovi Arrivi')">
+      <img src="assets/immagini3/img00/1bf776c1cdcf49d0a4e171905b050aed.webp" alt="Prodotto 1" />
+      <div class="categoria-content">
+        <p class="categoria-text">Scopri le ultime novità</p>
+        <button class="categoria-btn">Nuovi Arrivi</button>
+      </div>
+    </div>
+    <div class="categoria-box" (click)="filtraPerCategoria('Best Seller')">
+      <img src="assets/immagini3/img00/nike34.webp" alt="Prodotto 1" />
+      <div class="categoria-content">
+        <p class="categoria-text">I più venduti</p>
+        <button class="categoria-btn">Best Seller</button>
+      </div>
+    </div>
+  </div>
+        
+  <div class="prodotto">
+    <div class="categoria-box" (click)="filtraPerCategoria('Running')">
+      <img src="assets/immagini3/img00/sneakers-nike-piu-belle.webp" alt="Prodotto 2" />
+      <div class="categoria-content">
+        <p class="categoria-text">Per la corsa</p>
+        <button class="categoria-btn">Running</button>
+      </div>
+    </div>
+    <div class="categoria-box" (click)="filtraPerCategoria('Basket')">
+      <img src="assets/immagini3/img00/image.jpg" alt="Prodotto 2" />
+      <div class="categoria-content">
+        <p class="categoria-text">Per il basket</p>
+        <button class="categoria-btn">Basket</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<br>  
+          
+<!-- scrollbar di prodotti -->
+<div class="gallery-container">
+  <div class="gallery-header">
+    <h2>Acquista le nostre icone</h2>
+   <div id="button-group">
+    <button class="arrow-btn" (click)="scrollLeft()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
+    </button>
+    <button class="arrow-btn" (click)="scrollRight()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </button>
+   </div>
+  </div>
+
+  <div class="image-scroll" #scrollContainer (scroll)="onScroll()">
+    <div class="image-wrapper" *ngFor="let item of images">
+      <img [src]="item.src" [alt]="item.alt" (click)="onBuy(item)" />
+      <p class="product-name" (click)="onBuy(item)">{{ item.name }}</p>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="progress"></div>
+    <div class="progress-arrow-left" (click)="scrollLeft()" title="Scorri a sinistra"></div>
+    <div class="progress-arrow-right" (click)="scrollRight()" title="Scorri a destra"></div>
+  </div>
+</div>
+   
+<br><br>
+
+<!-- inizi elenco di prodotti -->
+
+
+</body>
+
+<!-- fine elenco di prodotti -->
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+ 
+
+
+
+
+
+
+
+
+
+
+

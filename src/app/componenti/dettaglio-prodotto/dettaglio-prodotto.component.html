@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab-Air</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+</head>
+
+<!-- INIZIO FINESTRA DI RICERCA INPUT -->
+<header>
+ <app-search
+    [searchTerm]="searchTerm"
+    [suggestions]="allSuggestions"
+    (searchTermChange)="onSearchTermChange($event)"
+  ></app-search>
+
+<!-- FINE FINESTRA DI RICERCA INPUT -->
+
+<!-- INIZIO SCROLLBAR PUBBLICITARIA-->
+<div class="scrollbar-container">
+  <div class="scrollbar-wrapper">
+   
+    <div class="scrolling-text">
+      <span *ngFor="let phrase of phrases">{{ phrase }} &nbsp;•&nbsp; </span>
+    </div>
+   
+  </div>
+</div>
+<!-- FINE SCROLLBAR PUBBLICITARIA-->
+</header>
+
+<body>
+
+<!--<div class="product-detail">
+    <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p><strong>Prezzo:</strong> €{{ product.price }}</p>
+  
+    <div class="selection">
+      <label for="size">Taglia:</label>
+      <select id="size" [(ngModel)]="selectedSize">
+       <option *ngFor="let size of product.sizes" [value]="size">{{ size }}</option>
+      </select>
+  
+      <label for="color">Colore:</label>
+      <select id="color" [(ngModel)]="selectedColor">
+        <option *ngFor="let color of product.colors" [value]="color">{{ color }}</option>
+      </select>
+    </div>
+  
+    <div *ngIf="showWarning" class="warning">
+      <p>Per favore, seleziona sia la taglia che il colore!</p>
+    </div>
+  
+    <button type="button" class="btn btn-secondary" (click)="addToCart()" [disabled]="!selectedSize || !selectedColor">Aggiungi al carrello</button>
+    
+    <button type="button" class="btn btn-primary" routerLink="/prodotti">Prodotti </button> 
+    <br>
+    <button type="button" class="btn btn-success" routerLink="/carrello">Visualizza Carrello </button>
+  </div>-->
+  
+
+
+
+<div class="page-wrapper" *ngIf="selectedProduct" >
+<div class="product-detail-container">
+  <!-- Layout per schermi grandi (>960px) -->
+  <div class="left-column">
+    <div class="image-carousel">
+      <div class="thumbnails">
+        <img *ngFor="let img of selectedProduct?.image2"
+             [src]="img"
+             (mouseenter)="selectImage(img)"
+             [class.selected]="img === selectedImage"
+             alt="thumb" />
+      </div>
+      <div class="main-image">
+        <img style="border: none;" *ngIf="selectedImage" [src]="selectedImage" alt="Immagine selezionata" />
+        <div class="carousel-controls">
+          <button class="arrow" (click)="prevImage()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+          </button>
+          <button class="arrow" (click)="nextImage()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <div class="row product-header">
+      <h2>{{ selectedProduct.name }}</h2>
+      <span class="price">€ {{ selectedProduct.price }}</span>
+    </div>
+    
+    <div class="row sizes" [ngClass]="{'size-error': sizeError, 'size-normal': !sizeError}">
+      <label [ngClass]="{'error-label': sizeError, 'normal-label': !sizeError}">
+        Seleziona la taglia
+      </label>
+      <div class="size-buttons">
+        <button *ngFor="let size of selectedProduct?.sizes"
+                class="size-btn"
+                [class.selected]="size === selectedSize"
+                (click)="selectSize(size)">
+          {{ size }}
+        </button>
+      </div>
+    </div>
+
+    <div class="row actions">
+      <button class="btn primary" (click)="addToCart2()">Aggiungi al carrello</button>
+      <button class="btn secondary" (click)="addToFavorites()">Aggiungi ai preferiti</button>
+    </div>
+
+    <div class="row description">
+      <p>{{ selectedProduct.description }}</p>
+    </div>
+  </div>
+
+  <!-- Layout mobile (≤960px) - elementi riorganizzati -->
+  <div class="mobile-layout">
+    <!-- 1) Nome e prezzo -->
+    <div class="row product-header">
+      <h2>{{ selectedProduct.name }}</h2>
+      <span class="price">€ {{ selectedProduct.price }}</span>
+    </div>
+
+    <!-- 2) Immagine grande -->
+    <div class="main-image">
+      <img style="border: none;" *ngIf="selectedImage" [src]="selectedImage" alt="Immagine selezionata" />
+      <div class="carousel-controls">
+        <button class="arrow" (click)="prevImage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <button class="arrow" (click)="nextImage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3) Immagini piccole in orizzontale -->
+    <div class="mobile-thumbnails">
+      <img *ngFor="let img of selectedProduct?.image2"
+           [src]="img"
+           (mouseenter)="selectImage(img)"
+           [class.selected]="img === selectedImage"
+           alt="thumb" />
+    </div>
+
+    <!-- 4) Selezione delle taglie -->
+    <div class="row sizes" [ngClass]="{'size-error': sizeError, 'size-normal': !sizeError}">
+      <label [ngClass]="{'error-label': sizeError, 'normal-label': !sizeError}">
+        Seleziona la taglia
+      </label>
+      <div class="size-buttons">
+        <button *ngFor="let size of selectedProduct?.sizes"
+                class="size-btn"
+                [class.selected]="size === selectedSize"
+                (click)="selectSize(size)">
+          {{ size }}
+        </button>
+      </div>
+    </div>
+
+    <!-- 5) I due pulsanti -->
+    <div class="row actions">
+      <button class="btn primary" (click)="addToCart2()">Aggiungi al carrello</button>
+      <button class="btn secondary" (click)="addToFavorites()">Aggiungi ai preferiti</button>
+    </div>
+
+    <!-- 6) La descrizione -->
+    <div class="row description">
+      <p>{{ selectedProduct.description }}</p>
+    </div>
+  </div>
+</div>
+</div>
+
+
+</body>
+
+<br>  
+          
+<!-- scrollbar di prodotti -->
+<div class="gallery-container">
+  <div class="gallery-header">
+    <h2>Potrebbe Piacerti Anche</h2>
+   <div id="button-group">
+    <button class="arrow-btn" (click)="scrollLeft()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
+    </button>
+    <button class="arrow-btn" (click)="scrollRight()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </button>
+   </div>
+  </div>
+
+  <div class="image-scroll" #scrollContainer (scroll)="onScroll()">
+    <div class="image-wrapper" *ngFor="let item of images">
+      <img [src]="item.src" [alt]="item.alt" (click)="onBuyGalleryItem(item)" />
+      <p class="product-name" (click)="onBuyGalleryItem(item)">{{ item.name }}</p>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="progress"></div>
+    <button class="progress-arrow-left" (click)="scrollLeft()" title="Scorri a sinistra"></button>
+    <button class="progress-arrow-right" (click)="scrollRight()" title="Scorri a destra"></button>
+  </div>
+</div>
+   
+<br><br>
+
+
+
+
+
+
+<!-- Footer -->
+<app-footer></app-footer>
+
+<!-- POPUP CARRELLO STILE NIKE -->
+<div class="cart-popup-overlay" *ngIf="showCartPopup" (click)="closeCartPopup()">
+  <div class="cart-popup" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <div class="success-icon">✓</div>
+      <button class="close-btn" (click)="closeCartPopup()">×</button>
+    </div>
+    
+    <div class="popup-content">
+      <div class="product-info">
+        <div class="product-image">
+          <img [src]="selectedProduct?.image" [alt]="selectedProduct?.name" />
+        </div>
+        
+        <div class="product-details">
+          <h3 class="product-name">{{ selectedProduct?.name }}</h3>
+          <p class="product-category">{{ selectedProduct?.category || 'Scarpe' }}</p>
+          <div class="product-variants">
+            <span class="variant">Taglia: {{ selectedSize }}</span>
+            <span class="variant">Colore: {{ selectedColor || 'Default' }}</span>
+          </div>
+          <div class="product-price">€{{ selectedProduct?.price }}</div>
+        </div>
+      </div>
+      
+      <div class="popup-actions">
+        <button class="btn-cart" (click)="goToCart()">
+          Visualizza carrello ({{ cartItemCount }})
+        </button>
+        <button class="btn-checkout" (click)="goToCheckout()">
+          Pagamento
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

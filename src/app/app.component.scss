@@ -1,0 +1,238 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background: #111;
+    color: #fff;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    width: 70px;  
+    height: 30px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero {
+
+    color: rgb(0, 0, 0);
+    text-align: center;
+   // padding: 100px 20px;
+    margin-top: 0;
+    width: 100%;
+}
+
+.btn {
+    background: #e63946;
+    color: white;
+   // padding: 10px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #d62839;
+}
+
+main {
+    padding: 0;
+}
+
+section {
+    margin: 20px 0;
+}
+
+.product {
+    text-align: center;
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.product img {
+    max-width: 600px;
+    height: auto;
+    padding: 10px;
+    
+}
+#products{
+    text-align: center;
+}
+
+footer {
+    margin-top: 600px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+.scroll-container {
+  width:100%;
+  position: relative;
+  margin-top: 50px;
+}
+.scrollbar {
+  width: 100%;
+  height: 7px;
+  margin-left: 10px;
+  background-color: #ddd;
+  margin-top: 10px;
+  position: relative;
+  border-radius: 5%;
+}
+.cursore-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.cursore {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  width: 16.66%; /* 100% / 6 images = 16.66% */
+  height: 100%;
+  background-color: #333;
+  position: absolute;
+  left: 0;
+  transition: left 0.5s ease-in-out;
+  border-radius: 50px;
+  
+}
+
+/* Buttons for sliding */
+.round-button {
+  width: 30px;  /* Width of the button */
+  height: 30px; /* Height of the button */
+  border-radius: 50%; /* Make the button round */
+  background-color: #333; /* Background color */
+  color: white;  /* Text color */
+  font-size: 14px; /* Font size */
+  border: none; /* Remove default border */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+.button-container {
+    padding-left: 10px;
+  display: flex;
+  gap: 10px; /* Spacing between the buttons */
+}
+.cursore img {
+  width: 850px;
+  height: 650px;
+  padding: 10px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+    /* Stile del Menu */
+    .MainMenu {
+      font-family: Arial, sans-serif;
+      
+      margin: 0;
+      height: 20vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(4, 200px); /* 4 colonne */
+      gap: 20px;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      padding: 20px;
+      justify-content: center;
+      
+    }
+
+    /* Stile delle voci del Menu */
+    .menu > li {
+      position: relative;
+      background-color: #ffffff;
+      color: rgb(0, 0, 0);
+      text-align: center;
+      padding: 20px;
+      transition: background-color 0.3s;
+    }
+
+
+
+    /* Link all'interno delle voci del menu */
+    .menu > li > a {
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .menu > li > a:hover {
+      color: #000000;
+    }
+
+    /* Sotto-menu - visibilità parziale */
+    .submenu {
+      display: flex;
+      flex-direction: column;
+      max-height: 100px; /* Imposta l'altezza visibile iniziale */
+      overflow: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #ffffff;
+      width: 200px;
+      z-index: 100;
+      transition: max-height 0.3s ease-in-out;
+    }
+
+    /* Voci del sotto-menu */
+    .submenu a {
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+      padding: 10px;
+      display: block;
+    }
+
+    
+    /* Espansione del sotto-menu al passaggio del mouse su menu o sotto-menu */
+    .menu > li:hover .submenu,
+    .submenu:hover {
+      max-height: 600px; /* Aumenta l'altezza al passaggio del mouse per mostrare tutte le voci */
+    }
+

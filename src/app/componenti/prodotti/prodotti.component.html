@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab-Air</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+</head>
+
+<header>
+<!-- INIZIO FINESTRA DI RICERCA INPUT -->
+
+ <app-search
+    [searchTerm]="searchTerm"
+    [suggestions]="allSuggestions"
+    (searchTermChange)="onSearchTermChange($event)"
+  ></app-search>
+
+<!-- FINE FINESTRA DI RICERCA INPUT -->
+
+<!-- INIZIO SCROLLBAR PUBBLICITARIA-->
+<div class="scrollbar-container">
+  <div class="scrollbar-wrapper">
+   
+    <div class="scrolling-text">
+      <span *ngFor="let phrase of phrases">{{ phrase }} &nbsp;•&nbsp; </span>
+    </div>
+   
+  </div>
+</div>
+<!-- FINE SCROLLBAR PUBBLICITARIA-->
+</header>
+
+<!-- INIZIO BODY -->
+
+<!-- mostra nome e numero dei prodotti filtrati dalla ricerca-->
+
+<div class="result">
+<div class="product-controls">
+<div class="conteggio-prodotti">
+ <h5>risultati di ricerca per</h5> 
+ <p>
+   <span *ngIf="sortOption === 'In evidenza'; else categoryOrSearchText">In evidenza ({{ prodottiFiltratiAcc.length }})</span>
+   <ng-template #categoryOrSearchText>{{ nome || 'tutti i prodotti' }} ({{ prodottiFiltratiAcc.length }})</ng-template>
+ </p>
+</div>
+
+<!--pulsante che mostra e nasconde la parte sinistra del contenitore del body-->
+
+<!-- Pulsanti per desktop (sopra i 960px) -->
+<div class="item-btn desktop-controls"> 
+<button class="toggle-filtri-btn nike-style" (click)="showFilters = !showFilters">
+  <span class="btn-text">{{ showFilters ? 'Nascondi filtri' : 'Mostra filtri' }}</span>
+  <span class="btn-icon">
+    <!-- Icona filtro quando i filtri sono visibili -->
+    <svg *ngIf="showFilters" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 7H21L18 12V19C18 19.5523 17.5523 20 17 20H7C6.44772 20 6 19.5523 6 19V12L3 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <!-- Icona griglia quando i filtri sono nascosti -->
+    <svg *ngIf="!showFilters" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</button>
+  
+<!-- select che mostra le varie opzioni di filtraggio dei prodotti-->
+
+<select class="option-select" [(ngModel)]="sortOption" (change)="sortProducts()">
+  <option value="" disabled hidden>Ordina per</option>
+  <option value="In evidenza">In evidenza</option>
+  <option value="price-asc">Prezzo: Crescente</option>
+  <option value="price-desc">Prezzo: Decrescente</option>
+</select>
+
+</div>
+
+<!-- Pulsante per mobile (sotto i 960px) -->
+<div class="item-btn mobile-controls">
+  <button class="mobile-filtri-btn" (click)="toggleMobileFiltersModal()">
+    <span class="btn-text">Filtri</span>
+    <span class="btn-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 7H21L18 12V19C18 19.5523 17.5523 20 17 20H7C6.44772 20 6 19.5523 6 19V12L3 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </button>
+</div>
+  </div>
+
+<!-- LA PARTE SINISTRA DEL CONTENITORE DEL BODY-->
+
+ <div class="result-body"  [ngClass]="{ 'full-width': !showFilters }" >
+<div class="product-body">
+
+
+
+
+<div class="accordion desktop-accordion" [ngClass]="{ 'hidden': !showFilters }" #accordionContainer (scroll)="onAccordionScroll()">
+  
+
+
+
+
+
+<!-- Accordion Colori -->
+
+  <div class="accordion-header" (click)="toggleSection('colors')">
+    <h4 class="accordion-title"> Colori</h4>
+
+    <svg class="accordion-arrow" [class.rotate]="accordion.colors" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+  </div>
+  <div *ngIf="accordion.colors" class="color-options">
+    <div
+      class="color-circle-wrapper"
+      *ngFor="let color of colorOptions"
+      (click)="selectedColors[color] = !selectedColors[color]"
+      [class.active]="selectedColors[color]"
+    >
+      <div class="color-circle" [ngStyle]="{ 'background-color': getColorHex(color) }">
+        <span class="checkmark"></span>
+      </div>
+      <span class="color-name">{{ color }}</span>
+    </div>
+  </div>
+
+
+<!-- Accordion Taglie -->
+<div>
+  <div class="accordion-header" (click)="toggleSection('sizes')">
+    <h4 class="accordion-title">Taglie</h4>
+    <svg class="accordion-arrow" [class.rotate]="accordion.sizes" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div *ngIf="accordion.sizes" class="size-options">
+    <div
+      class="square-wrapper row-layout"
+      *ngFor="let size of sizeOptions"
+      (click)="selectedSizes[size] = !selectedSizes[size]"
+      [class.active]="selectedSizes[size]"
+    >
+      <div class="square-box"><span class="checkmark">✔</span></div>
+      <span class="square-label">{{ size }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Accordion Prezzi -->
+<div>
+  <div class="accordion-header" (click)="toggleSection('prices')">
+    <h4 class="accordion-title">Prezzo</h4>
+    <svg class="accordion-arrow" [class.rotate]="accordion.prices" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div *ngIf="accordion.prices" class="price-options">
+    <div
+      class="square-wrapper row-layout"
+    *ngFor="let price of priceRanges"
+  (click)="togglePriceFilter(price.value)"
+  [class.active]="selectedPrices.includes(price.value)"
+>
+      <div class="square-box"><span class="checkmark">✔</span></div>
+      <span class="square-label">{{ price.label }}</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- LA PARTE DESTRA DEL CONTENITORE DEL BODY-->
+
+<div class="prodotti-filtrati" #prodottiContainer (scroll)="onProdottiScroll()" *ngIf="prodottiFiltratiAcc.length > 0">
+  <div *ngFor="let product of prodottiFiltratiAcc" class="prodotto-item" (click)="viewProduct(product)">
+    <img [src]="product.image" [alt]="product.name" />
+    
+ 
+
+    <div class="prodotto-info">
+
+  <!-- descrizione del prodotto -->
+      <p class="categorie">
+        {{ product.category }}
+      </p>
+
+
+        {{ product.name }}  
+
+
+    <!-- Numero colori disponibili -->
+      <p class="colori-disponibili">
+        {{ product.colors.length || 0 }} colori disponibili
+      </p>
+
+      <!-- Prezzo -->
+     <p class="prezzo">€{{ product.price }}</p>
+      
+    </div>
+    </div>
+
+</div>
+
+<!-- Messaggio quando non ci sono prodotti che corrispondono ai filtri -->
+<div *ngIf="prodottiFiltratiAcc.length === 0 && prodottiFiltrati.length > 0" class="no-products-message">
+  <p>Nessun prodotto trovato con i filtri selezionati</p>
+  <p class="filter-suggestion">Prova a modificare i filtri per vedere più prodotti</p>
+</div>
+
+</div>
+</div>
+
+
+
+<!--<div *ngIf="prodotti.length === 0">
+  <p>Nessun prodotto trovato</p>
+</div>
+
+</div>-->
+
+<!-- FINE BODY-->
+
+
+<!-- Finestra modale filtri per mobile -->
+<div class="mobile-filters-modal" *ngIf="showMobileFiltersModal" (click)="closeMobileFiltersModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Filtri e Ordinamento</h3>
+      <button class="close-btn" (click)="closeMobileFiltersModal()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Sezione Ordinamento -->
+      <div class="sort-section">
+        <h4>Ordina per</h4>
+        <select class="modal-select" [(ngModel)]="sortOption" (change)="sortProducts()">
+          <option value="" disabled hidden>Seleziona ordinamento</option>
+          <option value="In evidenza">In evidenza</option>
+          <option value="price-asc">Prezzo: Crescente</option>
+          <option value="price-desc">Prezzo: Decrescente</option>
+        </select>
+      </div>
+
+      <!-- Accordion Filtri -->
+      <div class="filters-section">
+        <h4>Filtri</h4>
+        
+        <!-- Accordion Colori -->
+        <div class="modal-accordion-item">
+          <div class="modal-accordion-header" (click)="toggleSection('colors')">
+            <h5>Colori</h5>
+            <svg class="accordion-arrow" [class.rotate]="accordion.colors" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div *ngIf="accordion.colors" class="modal-color-options">
+            <div
+              class="color-circle-wrapper"
+              *ngFor="let color of colorOptions"
+              (click)="selectedColors[color] = !selectedColors[color]"
+              [class.active]="selectedColors[color]"
+            >
+              <div class="color-circle" [ngStyle]="{ 'background-color': getColorHex(color) }">
+                <span class="checkmark"></span>
+              </div>
+              <span class="color-name">{{ color }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Taglie -->
+        <div class="modal-accordion-item">
+          <div class="modal-accordion-header" (click)="toggleSection('sizes')">
+            <h5>Taglie</h5>
+            <svg class="accordion-arrow" [class.rotate]="accordion.sizes" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div *ngIf="accordion.sizes" class="modal-size-options">
+            <div
+              class="square-wrapper row-layout"
+              *ngFor="let size of sizeOptions"
+              (click)="selectedSizes[size] = !selectedSizes[size]"
+              [class.active]="selectedSizes[size]"
+            >
+              <div class="square-box"><span class="checkmark">✔</span></div>
+              <span class="square-label">{{ size }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Prezzi -->
+        <div class="modal-accordion-item">
+          <div class="modal-accordion-header" (click)="toggleSection('prices')">
+            <h5>Prezzo</h5>
+            <svg class="accordion-arrow" [class.rotate]="accordion.prices" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div *ngIf="accordion.prices" class="modal-price-options">
+            <div
+              class="square-wrapper row-layout"
+              *ngFor="let price of priceRanges"
+              (click)="togglePriceFilter(price.value)"
+              [class.active]="selectedPrices.includes(price.value)"
+            >
+              <div class="square-box"><span class="checkmark">✔</span></div>
+              <span class="square-label">{{ price.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="apply-filters-btn" (click)="closeMobileFiltersModal()">
+        Applica Filtri
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>
+
+
