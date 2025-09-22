@@ -426,11 +426,11 @@ images: GalleryItem[] = [
     { id: 35 ,
       name: "Nike Air Max Plus",
       image2: [
-        '/assets/immagini3/img35/shopping5.webp',
-        '/assets/immagini3/img35/shopping3.webp',
-        '/assets/immagini3/img35/shopping4.webp',
-        '/assets/immagini3/img35/shopping2.webp',
-        '/assets/immagini3/img35/shopping6.webp'
+        'assets/immagini3/img35/shopping5.webp',
+        'assets/immagini3/img35/shopping3.webp',
+        'assets/immagini3/img35/shopping4.webp',
+        'assets/immagini3/img35/shopping2.webp',
+        'assets/immagini3/img35/shopping6.webp'
       ],
       src: 'assets/immagini3/img35/shopping5.webp',
       price: 169.99,
@@ -440,11 +440,11 @@ images: GalleryItem[] = [
     { id: 24, 
       name:  "Nike Air Max 270 React",
       image2: [
-        '/assets/immagini3/img24/shopping6.webp',
-        '/assets/immagini3/img24/shopping3.webp',
-        '/assets/immagini3/img24/shopping4.webp',
-        '/assets/immagini3/img24/shopping2.webp',
-        '/assets/immagini3/img24/shopping5.webp'
+        'assets/immagini3/img24/shopping6.webp',
+        'assets/immagini3/img24/shopping3.webp',
+        'assets/immagini3/img24/shopping4.webp',
+        'assets/immagini3/img24/shopping2.webp',
+        'assets/immagini3/img24/shopping5.webp'
       ],
       src: 'assets/immagini3/img24/shopping6.webp',
       price: 159.99,

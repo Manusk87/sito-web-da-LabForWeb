@@ -367,11 +367,11 @@ images: GalleryItem[] = [
     { id: 1 ,
       name: "Nike Air Max 270",
       image2: [
-        '/assets/immagini3/img01/shopping6.webp',
-        '/assets/immagini3/img01/shopping3.webp',
-        '/assets/immagini3/img01/shopping4.webp',
-        '/assets/immagini3/img01/shopping2.webp',
-        '/assets/immagini3/img01/shopping5.webp'
+        'assets/immagini3/img01/shopping6.webp',
+        'assets/immagini3/img01/shopping3.webp',
+        'assets/immagini3/img01/shopping4.webp',
+        'assets/immagini3/img01/shopping2.webp',
+        'assets/immagini3/img01/shopping5.webp'
       ],
       src: 'assets/immagini3/img01/shopping6.webp',
       price: 29.99,
@@ -382,11 +382,11 @@ images: GalleryItem[] = [
     { id: 12, 
       name: "Nike Air Zoom Vomero 16",
       image2: [
-        '/assets/immagini3/img12/shopping6.webp',
-        '/assets/immagini3/img12/shopping3.webp',
-        '/assets/immagini3/img12/shopping4.webp',
-        '/assets/immagini3/img12/shopping2.webp',
-        '/assets/immagini3/img12/shopping5.webp'
+        'assets/immagini3/img12/shopping6.webp',
+        'assets/immagini3/img12/shopping3.webp',
+        'assets/immagini3/img12/shopping4.webp',
+        'assets/immagini3/img12/shopping2.webp',
+        'assets/immagini3/img12/shopping5.webp'
       ],
       src: 'assets/immagini3/img12/shopping6.webp',
       price: 149.99,

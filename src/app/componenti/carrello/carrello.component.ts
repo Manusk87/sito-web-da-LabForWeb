@@ -58,11 +58,11 @@ images: GalleryItem[] = [
     { id: 10 ,
       name: "Nike Air VaporMax Plus",
       image2: [
-        '/assets/immagini3/img10/shopping6.webp',
-        '/assets/immagini3/img10/shopping3.webp',
-        '/assets/immagini3/img10/shopping4.webp',
-        '/assets/immagini3/img10/shopping2.webp',
-        '/assets/immagini3/img10/shopping5.webp'
+        'assets/immagini3/img10/shopping6.webp',
+        'assets/immagini3/img10/shopping3.webp',
+        'assets/immagini3/img10/shopping4.webp',
+        'assets/immagini3/img10/shopping2.webp',
+        'assets/immagini3/img10/shopping5.webp'
       ],
       src: 'assets/immagini3/img10/shopping6.webp',
       price: 209.99,
@@ -72,11 +72,11 @@ images: GalleryItem[] = [
     { id: 14, 
       name: "Nike Blazer Mid '77 Vintage",
       image2: [
-        '/assets/immagini3/img14/shopping5.webp',
-        '/assets/immagini3/img14/shopping3.webp',
-        '/assets/immagini3/img14/shopping4.webp',
-        '/assets/immagini3/img14/shopping2.webp',
-        '/assets/immagini3/img14/shopping6.webp'
+        'assets/immagini3/img14/shopping5.webp',
+        'assets/immagini3/img14/shopping3.webp',
+        'assets/immagini3/img14/shopping4.webp',
+        'assets/immagini3/img14/shopping2.webp',
+        'assets/immagini3/img14/shopping6.webp'
       ],
       src: 'assets/immagini3/img14/shopping5.webp',
       price: 99.99,
